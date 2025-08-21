@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="./assets/logo.jpg" />
+    <title>Zaishta Scholarship Registration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="./style.css" />
+</head>
+<body class="min-h-screen py-8 px-4 sm:px-6">
+    <div class="container max-w-5xl mx-auto animate-fadeIn">
+        <!-- Header -->
+        <div class="header px-8 py-10 text-center relative">
+            <div class="relative z-10">
+                <img src="./assets/logo.jpg" alt="Zaishta Group Logo"
+                    class="mx-auto h-15 mb-6">
+                <h1 class="text-3xl font-bold mb-2">Scholarship Application Form</h1>
+                <p class="opacity-90">Complete this form to apply for the Zaishta Education Scholarship Program</p>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="p-8 sm:p-10">
+            <form id="scholarshipForm" action="/submit" method="POST" enctype="multipart/form-data" class="space-y-8">
+                <!-- Section 1: Account Information -->
+                <div class="form-section p-6 rounded-lg animate-fadeIn delay-100">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-primary-100 p-2 rounded-full mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold">Account Information</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Nationality -->
+                        <div class="form-group">
+                            <select id="nationality" name="nationality" required class="w-full px-4 py-3 rounded-lg">
+                                <option value="" selected disabled></option>
+                                <option value="Pakistani">Pakistani</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <label for="nationality" class="floating-label">Nationality</label>
+                        </div>
+
+                        <!-- Province -->
+                        <div class="form-group">
+                            <select id="province" name="province" required class="w-full px-4 py-3 rounded-lg">
+                                <option value="" selected disabled></option>
+                                <option>Punjab</option>
+                                <option>Sindh</option>
+                                <option>KPK</option>
+                                <option>Balochistan</option>
+                                <option>Gilgit Baltistan</option>
+                                <option>AJK</option>
+                            </select>
+                            <label for="province" class="floating-label">Province</label>
+                        </div>
+
+                        <!-- Institute -->
+                        <div class="form-group">
+                            <input type="text" id="institute" name="institute" required
+                                class="w-full px-4 py-3 rounded-lg" placeholder=" ">
+                            <label for="institute" class="floating-label">Institute/University</label>
+                        </div>
+
+                        <!-- CNIC -->
+                        <div class="form-group">
+                            <input type="text" id="cnic" name="cnic" required class="w-full px-4 py-3 rounded-lg"
+                                placeholder=" ">
+                            <label for="cnic" class="floating-label">CNIC Number</label>
+                            <p class="mt-1 text-sm text-gray-500">Spaces and dashes (-) are not allowed</p>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group md:col-span-2">
+                            <input type="email" id="email" name="email" required class="w-full px-4 py-3 rounded-lg"
+                                placeholder=" ">
+                            <label for="email" class="floating-label">Email Address</label>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group">
+                            <input type="password" id="password" name="password" required
+                                class="w-full px-4 py-3 rounded-lg" placeholder=" ">
+                            <label for="password" class="floating-label">Password</label>
+                            <p class="mt-1 text-sm text-gray-500">Minimum 6 characters</p>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="form-group">
+                            <input type="password" id="confirmPassword" name="confirmPassword" required
+                                class="w-full px-4 py-3 rounded-lg" placeholder=" ">
+                            <label for="confirmPassword" class="floating-label">Confirm Password</label>
+                        </div>
+
+                        <!-- Profile Picture -->
+                        <div class="md:col-span-2">
+                            <label class="block mb-2 font-medium">Profile Picture</label>
+                            <div
+                                class="upload-area rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer">
+                                <input type="file" id="profileImage" name="profileImage" accept="image/*"
+                                    class="hidden">
+                                <img src="https://placehold.co/150x150?text=Upload+Photo" alt="Profile preview"
+                                    id="profilePreview"
+                                    class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-white shadow">
+                                <span class="btn-primary inline-flex items-center px-4 py-2 rounded-lg text-white">
+                                    <i class="fas fa-upload mr-2"></i> Choose Photo
+                                </span>
+                                <p class="mt-2 text-sm text-gray-500">Max size: 200KB</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Personal Information -->
+                <div class="form-section p-6 rounded-lg animate-fadeIn delay-200">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-primary-100 p-2 rounded-full mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold">Personal Information</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- First Name -->
+                        <div class="form-group">
+                            <input type="text" id="firstName" name="firstName" required
+                                class="w-full px-4 py-3 rounded-lg" placeholder=" ">
+                            <label for="firstName" class="floating-label">First Name</label>
+                        </div>
+
+                        <!-- Middle Name -->
+                        <div class="form-group">
+                            <input type="text" id="middleName" name="middleName" class="w-full px-4 py-3 rounded-lg"
+                                placeholder=" ">
+                            <label for="middleName" class="floating-label">Middle Name</label>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="form-group">
+                            <input type="text" id="lastName" name="lastName" required
+                                class="w-full px-4 py-3 rounded-lg" placeholder=" ">
+                            <label for="lastName" class="floating-label">Last Name</label>
+                        </div>
+
+                        <!-- Guardian Name -->
+                        <div class="form-group md:col-span-2">
+                            <input type="text" id="guardianName" name="guardianName" required
+                                class="w-full px-4 py-3 rounded-lg" placeholder=" ">
+                            <label for="guardianName" class="floating-label">Father/Guardian Name</label>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="form-group">
+                            <select id="gender" name="gender" required class="w-full px-4 py-3 rounded-lg">
+                                <option value="" selected disabled></option>
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Other</option>
+                            </select>
+                            <label for="gender" class="floating-label">Gender</label>
+                        </div>
+
+                        <!-- Religion -->
+                        <div class="form-group">
+                            <select id="religion" name="religion" required class="w-full px-4 py-3 rounded-lg">
+                                <option value="" selected disabled></option>
+                                <option>Islam</option>
+                                <option>Christianity</option>
+                                <option>Hinduism</option>
+                                <option>Other</option>
+                            </select>
+                            <label for="religion" class="floating-label">Religion</label>
+                        </div>
+
+                        <!-- Phone Numbers -->
+                        <div class="form-group">
+                            <input type="tel" id="homePhone" name="homePhone" class="w-full px-4 py-3 rounded-lg"
+                                placeholder=" ">
+                            <label for="homePhone" class="floating-label">Home Phone</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="tel" id="mobile" name="mobile" required class="w-full px-4 py-3 rounded-lg"
+                                placeholder=" ">
+                            <label for="mobile" class="floating-label">Mobile Phone</label>
+                        </div>
+
+                        <!-- Family Status -->
+                        <div class="form-group">
+                            <select id="fatherStatus" name="fatherStatus" required class="w-full px-4 py-3 rounded-lg">
+                                <option value="" selected disabled></option>
+                                <option>Alive</option>
+                                <option>Deceased</option>
+                            </select>
+                            <label for="fatherStatus" class="floating-label">Father Status</label>
+                        </div>
+
+                        <div class="form-group">
+                            <select id="motherStatus" name="motherStatus" required class="w-full px-4 py-3 rounded-lg">
+                                <option value="" selected disabled></option>
+                                <option>Alive</option>
+                                <option>Deceased</option>
+                            </select>
+                            <label for="motherStatus" class="floating-label">Mother Status</label>
+                        </div>
+
+                        <!-- Institute Type -->
+                        <div class="form-group">
+                            <select id="instituteType" name="instituteType" required
+                                class="w-full px-4 py-3 rounded-lg">
+                                <option value="" selected disabled></option>
+                                <option>University</option>
+                                <option>College</option>
+                                <option>High School</option>
+                                <option>Primary</option>
+                            </select>
+                            <label for="instituteType" class="floating-label">Institute Type</label>
+                        </div>
+
+                        <!-- Sub Campus -->
+                        <div class="form-group">
+                            <input type="text" id="subCampus" name="subCampus" class="w-full px-4 py-3 rounded-lg"
+                                placeholder=" ">
+                            <label for="subCampus" class="floating-label">Sub-Campus</label>
+                        </div>
+
+                        <!-- Date of Admission -->
+                        <div class="form-group">
+                            <input type="date" id="admissionDate" name="admissionDate"
+                                class="w-full px-4 py-3 rounded-lg" placeholder=" ">
+                            <label for="admissionDate" class="floating-label">Date of Admission</label>
+                        </div>
+
+                        <!-- Date of Birth -->
+                        <div class="form-group">
+                            <input type="date" id="dob" name="dob" required class="w-full px-4 py-3 rounded-lg"
+                                placeholder=" ">
+                            <label for="dob" class="floating-label">Date of Birth</label>
+                        </div>
+
+                        <!-- Domicile -->
+                        <div class="form-group">
+                            <select id="domicile" name="domicile" required class="w-full px-4 py-3 rounded-lg">
+                                <option value="" selected disabled></option>
+                                <option>Punjab</option>
+                                <option>Sindh</option>
+                                <option>KPK</option>
+                                <option>Balochistan</option>
+                                <option>Gilgit Baltistan</option>
+                                <option>AJK</option>
+                            </select>
+                            <label for="domicile" class="floating-label">Domicile</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Academic Information -->
+                <div class="form-section p-6 rounded-lg animate-fadeIn delay-300">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-primary-100 p-2 rounded-full mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold">Academic Information</h2>
+                    </div>
+
+                    <!-- Secondary Education -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-medium mb-4 text-primary">Secondary School Certificate / Matriculation /
+                            O-Level / Diploma</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="form-group">
+                                <select id="sscProgramTitle" name="sscProgramTitle" required
+                                    class="w-full px-4 py-3 rounded-lg">
+                                    <option value="" selected disabled></option>
+                                    <option>Matriculation</option>
+                                    <option>O-Level</option>
+                                    <option>Diploma</option>
+                                    <option>Other</option>
+                                </select>
+                                <label for="sscProgramTitle" class="floating-label">Program Title</label>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" id="sscInstitute" name="sscInstitute" required
+                                    class="w-full px-4 py-3 rounded-lg" placeholder=" ">
+                                <label for="sscInstitute" class="floating-label">Institute</label>
+                            </div>
+
+                            <div class="form-group">
+                                <select id="sscDiscipline" name="sscDiscipline" required
+                                    class="w-full px-4 py-3 rounded-lg">
+                                    <option value="" selected disabled></option>
+                                    <option>Science</option>
+                                    <option>Arts</option>
+                                    <option>Commerce</option>
+                                    <option>Technical</option>
+                                    <option>Other</option>
+                                </select>
+                                <label for="sscDiscipline" class="floating-label">Discipline</label>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="number" id="sscObtainedMarks" name="sscObtainedMarks" required
+                                    class="w-full px-4 py-3 rounded-lg" placeholder=" ">
+                                <label for="sscObtainedMarks" class="floating-label">Obtained Marks</label>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="number" id="sscTotalMarks" name="sscTotalMarks" required
+                                    class="w-full px-4 py-3 rounded-lg" placeholder=" ">
+                                <label for="sscTotalMarks" class="floating-label">Total Marks</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Higher Secondary Education -->
+                    <div>
+                        <h3 class="text-lg font-medium mb-4 text-primary">Higher Secondary School Certificate /
+                            Intermediate / A-Level</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="form-group">
+                                <select id="hscProgramTitle" name="hscProgramTitle" required
+                                    class="w-full px-4 py-3 rounded-lg">
+                                    <option value="" selected disabled></option>
+                                    <option>Intermediate</option>
+                                    <option>A-Level</option>
+                                    <option>Diploma</option>
+                                    <option>Other</option>
+                                </select>
+                                <label for="hscProgramTitle" class="floating-label">Program Title</label>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" id="hscInstitute" name="hscInstitute" required
+                                    class="w-full px-4 py-3 rounded-lg" placeholder=" ">
+                                <label for="hscInstitute" class="floating-label">Institute</label>
+                            </div>
+
+                            <div class="form-group">
+                                <select id="hscDiscipline" name="hscDiscipline" required
+                                    class="w-full px-4 py-3 rounded-lg">
+                                    <option value="" selected disabled></option>
+                                    <option>Science</option>
+                                    <option>Arts</option>
+                                    <option>Commerce</option>
+                                    <option>Technical</option>
+                                    <option>Other</option>
+                                </select>
+                                <label for="hscDiscipline" class="floating-label">Discipline</label>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="number" id="hscObtainedMarks" name="hscObtainedMarks" required
+                                    class="w-full px-4 py-3 rounded-lg" placeholder=" ">
+                                <label for="hscObtainedMarks" class="floating-label">Obtained Marks</label>
+                            </div>
+
+                            <div class="form-group">
+                                <input type="number" id="hscTotalMarks" name="hscTotalMarks" required
+                                    class="w-full px-4 py-3 rounded-lg" placeholder=" ">
+                                <label for="hscTotalMarks" class="floating-label">Total Marks</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Student Registration -->
+                <div class="form-section p-6 rounded-lg animate-fadeIn delay-300">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-primary-100 p-2 rounded-full mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold">Student Registration</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="form-group">
+                            <select id="programDiscipline" name="programDiscipline" required
+                                class="w-full px-4 py-3 rounded-lg">
+                                <option value="" selected disabled></option>
+                                <option>Engineering</option>
+                                <option>Medical</option>
+                                <option>Business</option>
+                                <option>Computer Science</option>
+                                <option>Arts</option>
+                                <option>Social Sciences</option>
+                                <option>Other</option>
+                            </select>
+                            <label for="programDiscipline" class="floating-label">Program Discipline</label>
+                        </div>
+
+                        <div class="form-group">
+                            <select id="degreeTitle" name="degreeTitle" required class="w-full px-4 py-3 rounded-lg">
+                                <option value="" selected disabled></option>
+                                <option>Bachelor</option>
+                                <option>Master</option>
+                                <option>MPhil</option>
+                                <option>PhD</option>
+                                <option>Diploma</option>
+                                <option>Other</option>
+                            </select>
+                            <label for="degreeTitle" class="floating-label">Degree Title</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 5: Family Information -->
+                <div class="form-section p-6 rounded-lg animate-fadeIn delay-300">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-primary-100 p-2 rounded-full mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold">Family Information</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="form-group">
+                            <select id="familyIncome" name="familyIncome" required class="w-full px-4 py-3 rounded-lg">
+                                <option value="" selected disabled></option>
+                                <option>Less than 20,000 PKR</option>
+                                <option>20,000 - 40,000 PKR</option>
+                                <option>40,000 - 60,000 PKR</option>
+                                <option>60,000 - 80,000 PKR</option>
+                                <option>80,000 - 100,000 PKR</option>
+                                <option>Above 100,000 PKR</option>
+                            </select>
+                            <label for="familyIncome" class="floating-label">Monthly Family Income</label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="text" id="passportNo" name="passportNo" class="w-full px-4 py-3 rounded-lg"
+                                placeholder=" ">
+                            <label for="passportNo" class="floating-label">Passport Number (if applicable)</label>
+                        </div>
+
+                        <div class="form-group">
+                            <select id="dualNationality" name="dualNationality" required
+                                class="w-full px-4 py-3 rounded-lg">
+                                <option value="" selected disabled></option>
+                                <option>No</option>
+                                <option>Yes</option>
+                            </select>
+                            <label for="dualNationality" class="floating-label">Dual Nationality</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 6: Address Information -->
+                <div class="form-section p-6 rounded-lg animate-fadeIn delay-400">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-primary-100 p-2 rounded-full mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold">Address Information</h2>
+                    </div>
+
+                    <!-- Mailing Address -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-medium mb-4 text-primary">Mailing Address</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="form-group">
+                                <select id="mailingCountry" name="mailingCountry" required
+                                    class="w-full px-4 py-3 rounded-lg">
+                                    <option value="" selected disabled></option>
+                                    <option>Pakistan</option>
+                                    <option>India</option>
+                                    <option>Bangladesh</option>
+                                    <option>Afghanistan</option>
+                                    <option>China</option>
+                                    <option>Other</option>
+                                </select>
+                                <label for="mailingCountry" class="floating-label">Country</label>
+                            </div>
+
+                            <div class="form-group">
+                                <select id="mailingProvince" name="mailingProvince" required
+                                    class="w-full px-4 py-3 rounded-lg">
+                                    <option value="" selected disabled></option>
+                                    <option>Punjab</option>
+                                    <option>Sindh</option>
+                                    <option>KPK</option>
+                                    <option>Balochistan</option>
+                                    <option>Gilgit Baltistan</option>
+                                    <option>AJK</option>
+                                    <option>Other</option>
+                                </select>
+                                <label for="mailingProvince" class="floating-label">Province</label>
+                            </div>
+
+                            <div class="form-group">
+                                <select id="mailingDistrict" name="mailingDistrict" required
+                                    class="w-full px-4 py-3 rounded-lg">
+                                    <option value="" selected disabled></option>
+                                    <option>Lahore</option>
+                                    <option>Karachi</option>
+                                    <option>Islamabad</option>
+                                    <option>Peshawar</option>
+                                    <option>Quetta</option>
+                                    <option>Other</option>
+                                </select>
+                                <label for="mailingDistrict" class="floating-label">District</label>
+                            </div>
+
+                            <div class="form-group">
+                                <select id="mailingCity" name="mailingCity" required
+                                    class="w-full px-4 py-3 rounded-lg">
+                                    <option value="" selected disabled></option>
+                                    <option>Lahore</option>
+                                    <option>Karachi</option>
+                                    <option>Islamabad</option>
+                                    <option>Peshawar</option>
+                                    <option>Quetta</option>
+                                    <option>Other</option>
+                                </select>
+                                <label for="mailingCity" class="floating-label">City</label>
+                            </div>
+
+                            <div class="form-group md:col-span-2">
+                                <textarea id="mailingFullAddress" name="mailingFullAddress" required
+                                    class="w-full px-4 py-3 rounded-lg" placeholder=" "></textarea>
+                                <label for="mailingFullAddress" class="floating-label">Full Address</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Permanent Address -->
+                    <div>
+                        <h3 class="text-lg font-medium mb-4 text-primary">Permanent Address</h3>
+                        <div class="flex items-center mb-4">
+                            <input type="checkbox" id="sameAsMailing" name="sameAsMailing" class="hidden">
+                            <label for="sameAsMailing" class="flex items-center cursor-pointer">
+                                <span class="custom-checkbox mr-2"></span>
+                                <span>Same as Mailing Address</span>
+                            </label>
+                        </div>
+
+                        <div id="permanentAddressFields" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="form-group">
+                                <select id="permanentCountry" name="permanentCountry"
+                                    class="w-full px-4 py-3 rounded-lg">
+                                    <option value="" selected disabled></option>
+                                    <option>Pakistan</option>
+                                    <option>India</option>
+                                    <option>Bangladesh</option>
+                                    <option>Afghanistan</option>
+                                    <option>China</option>
+                                    <option>Other</option>
+                                </select>
+                                <label for="permanentCountry" class="floating-label">Country</label>
+                            </div>
+
+                            <div class="form-group">
+                                <select id="permanentProvince" name="permanentProvince"
+                                    class="w-full px-4 py-3 rounded-lg">
+                                    <option value="" selected disabled></option>
+                                    <option>Punjab</option>
+                                    <option>Sindh</option>
+                                    <option>KPK</option>
+                                    <option>Balochistan</option>
+                                    <option>Gilgit Baltistan</option>
+                                    <option>AJK</option>
+                                    <option>Other</option>
+                                </select>
+                                <label for="permanentProvince" class="floating-label">Province</label>
+                            </div>
+
+                            <div class="form-group">
+                                <select id="permanentDistrict" name="permanentDistrict"
+                                    class="w-full px-4 py-3 rounded-lg">
+                                    <option value="" selected disabled></option>
+                                    <option>Lahore</option>
+                                    <option>Karachi</option>
+                                    <option>Islamabad</option>
+                                    <option>Peshawar</option>
+                                    <option>Quetta</option>
+                                    <option>Other</option>
+                                </select>
+                                <label for="permanentDistrict" class="floating-label">District</label>
+                            </div>
+
+                            <div class="form-group">
+                                <select id="permanentCity" name="permanentCity" class="w-full px-4 py-3 rounded-lg">
+                                    <option value="" selected disabled></option>
+                                    <option>Lahore</option>
+                                    <option>Karachi</option>
+                                    <option>Islamabad</option>
+                                    <option>Peshawar</option>
+                                    <option>Quetta</option>
+                                    <option>Other</option>
+                                </select>
+                                <label for="permanentCity" class="floating-label">City</label>
+                            </div>
+
+                            <div class="form-group md:col-span-2">
+                                <textarea id="permanentFullAddress" name="permanentFullAddress"
+                                    class="w-full px-4 py-3 rounded-lg" placeholder=" "></textarea>
+                                <label for="permanentFullAddress" class="floating-label">Full Address</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 7: Document Upload -->
+                <div class="form-section p-6 rounded-lg animate-fadeIn delay-400">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-primary-100 p-2 rounded-full mr-4">
+                            <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-xl font-semibold">Document Upload</h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- CNIC Front -->
+                        <div class="form-group">
+                            <label class="block mb-2 font-medium">CNIC Front</label>
+                            <div
+                                class="upload-area rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer">
+                                <input type="file" id="cnicFront" name="cnicFront" accept="image/*" class="hidden">
+                                <img src="https://placehold.co/300x200?text=CNIC+Front" alt="CNIC Front preview"
+                                    id="cnicFrontPreview" class="w-full h-40 object-contain mb-4">
+                                <span class="btn-primary inline-flex items-center px-4 py-2 rounded-lg text-white">
+                                    <i class="fas fa-upload mr-2"></i> Upload CNIC Front
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- CNIC Back -->
+                        <div class="form-group">
+                            <label class="block mb-2 font-medium">CNIC Back</label>
+                            <div
+                                class="upload-area rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer">
+                                <input type="file" id="cnicBack" name="cnicBack" accept="image/*" class="hidden">
+                                <img src="https://placehold.co/300x200?text=CNIC+Back" alt="CNIC Back preview"
+                                    id="cnicBackPreview" class="w-full h-40 object-contain mb-4">
+                                <span class="btn-primary inline-flex items-center px-4 py-2 rounded-lg text-white">
+                                    <i class="fas fa-upload mr-2"></i> Upload CNIC Back
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Matric Certificate -->
+                        <div class="form-group">
+                            <label class="block mb-2 font-medium">Matric Certificate</label>
+                            <div
+                                class="upload-area rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer">
+                                <input type="file" id="matricCert" name="matricCert" accept="image/*" class="hidden">
+                                <img src="https://placehold.co/300x200?text=Matric+Certificate"
+                                    alt="Matric Certificate preview" id="matricPreview"
+                                    class="w-full h-40 object-contain mb-4">
+                                <span class="btn-primary inline-flex items-center px-4 py-2 rounded-lg text-white">
+                                    <i class="fas fa-upload mr-2"></i> Upload Matric Certificate
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Intermediate Certificate -->
+                        <div class="form-group">
+                            <label class="block mb-2 font-medium">Intermediate Certificate</label>
+                            <div
+                                class="upload-area rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer">
+                                <input type="file" id="interCert" name="interCert" accept="image/*" class="hidden">
+                                <img src="https://placehold.co/300x200?text=Intermediate+Certificate"
+                                    alt="Intermediate Certificate preview" id="intermediatePreview"
+                                    class="w-full h-40 object-contain mb-4">
+                                <span class="btn-primary inline-flex items-center px-4 py-2 rounded-lg text-white">
+                                    <i class="fas fa-upload mr-2"></i> Upload Intermediate Certificate
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Domicile Certificate -->
+                        <div class="form-group">
+                            <label class="block mb-2 font-medium">Domicile Certificate</label>
+                            <div
+                                class="upload-area rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer">
+                                <input type="file" id="domicileDoc" name="domicileDoc" accept="image/*" class="hidden">
+                                <img src="https://placehold.co/300x200?text=Domicile+Certificate"
+                                    alt="Domicile Certificate preview" id="domicilePreview"
+                                    class="w-full h-40 object-contain mb-4">
+                                <span class="btn-primary inline-flex items-center px-4 py-2 rounded-lg text-white">
+                                    <i class="fas fa-upload mr-2"></i> Upload Domicile Certificate
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex flex-col sm:flex-row justify-end gap-4 pt-6">
+                    <button type="reset" class="btn-secondary px-6 py-3 rounded-lg border border-gray-300">
+                        <i class="fas fa-undo mr-2"></i> Reset Form
+                    </button>
+                    <button type="submit" class="btn-primary px-6 py-3 rounded-lg text-white">
+                        <i class="fas fa-paper-plane mr-2"></i> Submit Application
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="./script.js"></script>
+</body>
+</html>
