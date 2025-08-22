@@ -141,32 +141,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const formData = new FormData(event.target);
       try {
-        console.log("Sending POST to /submit");
-        const response = await fetch("/submit", {
+        console.log("Sending POST to http://localhost:3000/submit");
+        const response = await fetch("http://localhost:3000/submit", {
           method: "POST",
           body: formData,
         });
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(
-            errorText || `HTTP error! Status: ${response.status}`
-          );
+        const responseText = await response.text();
+        console.log("Raw response:", responseText);
+        let result;
+        try {
+          result = JSON.parse(responseText);
+        } catch (e) {
+          throw new Error(`Invalid JSON response: ${responseText}`);
         }
-
-        const result = await response.json();
-        alert(`${result.message}\nStudent ID: ${result.studentId}`);
-        event.target.reset();
-        initFloatingLabels();
-        document.querySelectorAll(".upload-area img").forEach((img) => {
-          img.src = img.src.includes("150x150")
-            ? "https://placehold.co/150x150?text=Upload+Photo"
-            : "https://placehold.co/300x200?text=Upload+Document";
-        });
+        if (response.ok) {
+          alert(`${result.message}\nStudent ID: ${result.studentId}`);
+          event.target.reset();
+          initFloatingLabels();
+          document.querySelectorAll(".upload-area img").forEach((img) => {
+            img.src = img.src.includes("150x150")
+              ? "https://placehold.co/150x150?text=Upload+Photo"
+              : "https://placehold.co/300x200?text=Upload+Document";
+          });
+        } else {
+          alert(result.message || "Error submitting form");
+        }
       } catch (error) {
         console.error("Fetch error:", error);
         alert(
-          `Error submitting form: ${error.message}. Please ensure the server is running and try again.`
+          `Error submitting form: ${error.message}. Ensure you access the form via http://localhost:3000 and the server is running.`
         );
       }
     });
