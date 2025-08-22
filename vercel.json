@@ -12,8 +12,8 @@
   ],
   "routes": [
     {
-      "src": "/api/(.*)",  // Adjusted to match the API route
-      "dest": "/server/server.js"  // Directing to the server.js file
+      "src": "/api/(.*)",  
+      "dest": "/server/server.js" 
     },
     {
       "src": "/(.*)",
