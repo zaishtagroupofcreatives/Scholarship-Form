@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: scholarship-form-backend
+    runtime: node
+    repo: https://github.com/your-repo/scholarship-form # Please replace with your repository URL
+    branch: main
+    healthCheckPath: /
+    plan: free
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD
+        value: password
+      - key: RENDER_DISK_MOUNT_PATH
+        value: /usr/src/app/server/Uploads
+    disk:
+      name: uploads
+      mountPath: /usr/src/app/server/Uploads
+      sizeGB: 1
+    buildFilter:
+      paths:
+        - server/**
+        - package.json
+        - render.yaml
+    buildCommand: "cd server && npm install"
+    startCommand: "cd server && node server.js"

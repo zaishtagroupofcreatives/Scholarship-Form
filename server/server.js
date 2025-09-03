@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
@@ -15,7 +15,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "..", "client"))); // Serve from D:\Scholarship Form\client
 
-const uploadsDir = path.join(__dirname, "Uploads");
+const uploadsDir =
+  process.env.RENDER_DISK_MOUNT_PATH || path.join(__dirname, "Uploads");
 fs.ensureDirSync(uploadsDir);
 
 // Multer storage configuration
@@ -181,7 +182,10 @@ app.get("/students/:studentId/files/:filename", auth, (req, res) => {
 
 function auth(req, res, next) {
   const user = basicAuth(req);
-  if (!user || user.name !== "admin" || user.pass !== "password") {
+  const adminUsername = process.env.ADMIN_USERNAME || "admin";
+  const adminPassword = process.env.ADMIN_PASSWORD || "password";
+
+  if (!user || user.name !== adminUsername || user.pass !== adminPassword) {
     res.set("WWW-Authenticate", 'Basic realm="Authorization Required"');
     return res.status(401).json({ message: "Unauthorized" });
   }
