@@ -8,8 +8,8 @@
   ],
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "https://scholarship-form-4.onrender.com/$1"
+      "source": "/api/submit",
+      "destination": "https://scholarship-form-3.onrender.com/submit"
     }
   ]
 }
