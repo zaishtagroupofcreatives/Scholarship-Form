@@ -41,6 +41,7 @@ app.post(
     { name: "domicileDoc", maxCount: 1 },
   ]),
   async (req, res) => {
+    console.log("Received /submit POST request from:", req.ip, "Origin:", req.headers.origin);
     try {
       console.log("Received /submit request");
       const formData = req.body;
