@@ -168,10 +168,70 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } catch (error) {
         console.error("Fetch error:", error);
-        alert(`Error submitting form: ${error.message}.`);
+        alert(`Error submitting form: ${error.message}. Please ensure your backend is reachable.`);
       }
     });
   } else {
     console.error("Form with ID 'scholarshipForm' not found.");
+  }
+
+  const fillFormButton = document.getElementById("fillFormButton");
+  if (fillFormButton) {
+    fillFormButton.addEventListener("click", () => {
+      const fieldsToFill = {
+        nationality: "Pakistani",
+        province: "Punjab",
+        institute: "Test University",
+        cnic: "1234567890123",
+        email: "test.user@example.com",
+        password: "password123",
+        confirmPassword: "password123",
+        firstName: "Test",
+        middleName: "Q",
+        lastName: "User",
+        guardianName: "Test Guardian",
+        gender: "Male",
+        religion: "Islam",
+        homePhone: "04212345678",
+        mobile: "03001234567",
+        fatherStatus: "Alive",
+        motherStatus: "Alive",
+        instituteType: "University",
+        subCampus: "Main Campus",
+        admissionDate: "2023-10-01",
+        dob: "2002-05-15",
+        domicile: "Punjab",
+        sscProgramTitle: "Matriculation",
+        sscInstitute: "Test High School",
+        sscDiscipline: "Science",
+        sscObtainedMarks: "950",
+        sscTotalMarks: "1100",
+        hscProgramTitle: "Intermediate",
+        hscInstitute: "Test College",
+        hscDiscipline: "Science",
+        hscObtainedMarks: "980",
+        hscTotalMarks: "1100",
+        programDiscipline: "Computer Science",
+        degreeTitle: "Bachelor",
+        familyIncome: "40,000 - 60,000 PKR",
+        passportNo: "AB1234567",
+        dualNationality: "No",
+        mailingCountry: "Pakistan",
+        mailingProvince: "Punjab",
+        mailingDistrict: "Lahore",
+        mailingCity: "Lahore",
+        mailingFullAddress: "123 Test Street, Lahore",
+      };
+
+      for (const id in fieldsToFill) {
+        const element = document.getElementById(id);
+        if (element) {
+          element.value = fieldsToFill[id];
+          // Trigger focus and blur to activate floating label correctly
+          element.dispatchEvent(new Event("focus"));
+          element.dispatchEvent(new Event("blur"));
+        }
+      }
+    });
   }
 });
