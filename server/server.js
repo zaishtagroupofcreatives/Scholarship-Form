@@ -1,7 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
-const fs = require("fs-extra");
+const { put, list } = require("@vercel/blob");
 const basicAuth = require("basic-auth");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -15,52 +15,11 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "..", "client"))); // Serve from D:\Scholarship Form\client
 
-const uploadsDir =
-  process.env.RENDER_DISK_MOUNT_PATH || path.join(__dirname, "Uploads");
-fs.ensureDirSync(uploadsDir);
-
 // Multer storage configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const firstName = req.body.firstName || "Unknown";
-    const lastName = req.body.lastName || "Student";
-    const studentId = `${firstName}_${lastName}`
-      .replace(/\s+/g, "_")
-      .toLowerCase();
-    const studentDir = path.join(uploadsDir, studentId);
-    fs.ensureDirSync(studentDir);
-    cb(null, studentDir);
-  },
-  filename: (req, file, cb) => {
-    let filename;
-    switch (file.fieldname) {
-      case "profileImage":
-        filename = "profile.jpg";
-        break;
-      case "cnicFront":
-        filename = "cnic_front.jpg";
-        break;
-      case "cnicBack":
-        filename = "cnic_back.jpg";
-        break;
-      case "matricCert":
-        filename = "matric_certificate.jpg";
-        break;
-      case "interCert":
-        filename = "intermediate_certificate.jpg";
-        break;
-      case "domicileDoc":
-        filename = "domicile_certificate.jpg";
-        break;
-      default:
-        filename = file.originalname;
-    }
-    cb(null, filename);
-  },
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({
-  storage,
+  storage: storage,
   limits: { fileSize: 200 * 1024 },
   fileFilter: (req, file, cb) => {
     if (!file.mimetype.startsWith("image/")) {
@@ -84,21 +43,12 @@ app.post(
   async (req, res) => {
     try {
       console.log("Received /submit request");
-      console.log("Form data:", req.body);
-      console.log("Files:", Object.keys(req.files || {}));
-
       const formData = req.body;
-      const firstName = formData.firstName || "Unknown";
-      const lastName = formData.lastName || "Student";
-      const studentId = `${firstName}_${lastName}`
-        .replace(/\s+/g, "_")
-        .toLowerCase();
-      const studentDir = path.join(uploadsDir, studentId);
+      const files = req.files;
 
       const requiredFields = ["firstName", "lastName", "cnic", "email"];
       for (const field of requiredFields) {
         if (!formData[field]) {
-          console.log(`Missing field: ${field}`);
           return res
             .status(400)
             .json({ message: `Missing required field: ${field}` });
@@ -111,8 +61,45 @@ app.post(
           .json({ message: "CNIC must be 13 digits without spaces or dashes" });
       }
 
-      const dataPath = path.join(studentDir, "data.json");
-      await fs.writeJson(dataPath, formData, { spaces: 2 });
+      const studentId = `${formData.firstName}_${formData.lastName}`
+        .replace(/\s+/g, "_")
+        .toLowerCase();
+
+      // Upload files to Vercel Blob
+      for (const fieldname in files) {
+        const file = files[fieldname][0];
+        let filename;
+        switch (fieldname) {
+          case "profileImage":
+            filename = "profile.jpg";
+            break;
+          case "cnicFront":
+            filename = "cnic_front.jpg";
+            break;
+          case "cnicBack":
+            filename = "cnic_back.jpg";
+            break;
+          case "matricCert":
+            filename = "matric_certificate.jpg";
+            break;
+          case "interCert":
+            filename = "intermediate_certificate.jpg";
+            break;
+          case "domicileDoc":
+            filename = "domicile_certificate.jpg";
+            break;
+          default:
+            filename = file.originalname;
+        }
+        const blobPath = `uploads/${studentId}/${filename}`;
+        await put(blobPath, file.buffer, { access: "public" });
+      }
+
+      // Upload form data as JSON to Vercel Blob
+      const dataPath = `uploads/${studentId}/data.json`;
+      await put(dataPath, JSON.stringify(formData, null, 2), {
+        access: "public",
+      });
 
       res
         .status(200)
@@ -142,7 +129,12 @@ app.use((error, req, res, next) => {
 // List all students
 app.get("/students", auth, async (req, res) => {
   try {
-    const students = await fs.readdir(uploadsDir);
+    const { blobs } = await list({ prefix: "uploads/" });
+    const students = [
+      ...new Set(
+        blobs.map((blob) => blob.pathname.split("/")[1])
+      ),
+    ];
     res.json({ students });
   } catch (error) {
     console.error("Error fetching students:", error);
@@ -153,16 +145,22 @@ app.get("/students", auth, async (req, res) => {
 // View specific student data
 app.get("/students/:studentId", auth, async (req, res) => {
   const { studentId } = req.params;
-  const studentDir = path.join(UploadsDir, studentId);
   try {
-    if (!(await fs.pathExists(studentDir))) {
+    const { blobs } = await list({ prefix: `uploads/${studentId}/` });
+    const dataBlob = blobs.find((blob) => blob.pathname.endsWith("data.json"));
+
+    if (!dataBlob) {
       return res.status(404).json({ message: "Student not found" });
     }
-    const dataPath = path.join(studentDir, "data.json");
-    const formData = await fs.readJson(dataPath);
-    const files = await fs.readdir(studentDir);
-    const fileList = files.filter((f) => f !== "data.json");
-    res.json({ formData, files: fileList });
+
+    const dataResponse = await fetch(dataBlob.url);
+    const formData = await dataResponse.json();
+
+    const files = blobs
+      .filter((blob) => !blob.pathname.endsWith("data.json"))
+      .map((blob) => blob.pathname.split("/").pop());
+
+    res.json({ formData, files });
   } catch (error) {
     console.error("Error fetching student:", error);
     res.status(500).json({ message: "Error fetching student data" });
@@ -170,13 +168,22 @@ app.get("/students/:studentId", auth, async (req, res) => {
 });
 
 // Serve student files
-app.get("/students/:studentId/files/:filename", auth, (req, res) => {
+app.get("/students/:studentId/files/:filename", auth, async (req, res) => {
   const { studentId, filename } = req.params;
-  const filePath = path.join(UploadsDir, studentId, filename);
-  if (fs.existsSync(filePath)) {
-    res.sendFile(filePath);
-  } else {
-    res.status(404).json({ message: "File not found" });
+  try {
+    const { blobs } = await list({
+      prefix: `uploads/${studentId}/${filename}`,
+    });
+    const fileBlob = blobs[0];
+
+    if (!fileBlob) {
+      return res.status(404).json({ message: "File not found" });
+    }
+
+    res.redirect(fileBlob.url);
+  } catch (error) {
+    console.error("Error fetching file:", error);
+    res.status(500).json({ message: "Error fetching file" });
   }
 });
 

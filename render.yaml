@@ -2,7 +2,7 @@ services:
   - type: web
     name: scholarship-form-backend
     runtime: node
-    repo: https://github.com/your-repo/scholarship-form # Please replace with your repository URL
+    repo: https://github.com/zaishtagroupofcreatives/Scholarship-Form
     branch: main
     healthCheckPath: /
     plan: free
@@ -13,12 +13,6 @@ services:
         value: admin
       - key: ADMIN_PASSWORD
         value: password
-      - key: RENDER_DISK_MOUNT_PATH
-        value: /usr/src/app/server/Uploads
-    disk:
-      name: uploads
-      mountPath: /usr/src/app/server/Uploads
-      sizeGB: 1
     buildFilter:
       paths:
         - server/**
