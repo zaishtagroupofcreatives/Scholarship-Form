@@ -11,11 +11,5 @@
       "source": "/api/(.*)",
       "destination": "${RENDER_BACKEND_URL}/$1"
     }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/client/$1"
-    }
   ]
 }
