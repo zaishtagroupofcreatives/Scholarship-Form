@@ -141,8 +141,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const formData = new FormData(event.target);
       try {
-        console.log("Sending POST to /api/submit");
-        const response = await fetch("/api/submit", {
+        console.log("Sending POST to "//scholarship-form-4.onrender.com/submit");
+        const response = await fetch("https://scholarship-form-4.onrender.com/submit", {
           method: "POST",
           body: formData,
         });
