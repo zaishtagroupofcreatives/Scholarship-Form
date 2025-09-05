@@ -13,7 +13,7 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "..", "client"))); // Serve from D:\Scholarship Form\client
+app.use(express.static(path.join(__dirname, "..", "client")));
 
 // Multer storage configuration
 const storage = multer.memoryStorage();

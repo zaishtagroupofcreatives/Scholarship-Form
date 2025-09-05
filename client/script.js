@@ -168,9 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       } catch (error) {
         console.error("Fetch error:", error);
-        alert(
-          `Error submitting form: ${error.message}. Please ensure your backend is reachable.`
-        );
+        alert(`Error submitting form: ${error.message}.`);
       }
     });
   } else {
