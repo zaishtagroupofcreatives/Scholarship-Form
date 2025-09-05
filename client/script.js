@@ -141,8 +141,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const formData = new FormData(event.target);
       try {
-        console.log("Sending POST to http://localhost:3000/submit");
-        const response = await fetch("http://localhost:3000/submit", {
+        console.log("Sending POST to /api/submit");
+        const response = await fetch("/api/submit", {
           method: "POST",
           body: formData,
         });
@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (error) {
         console.error("Fetch error:", error);
         alert(
-          `Error submitting form: ${error.message}. Ensure you access the form via http://localhost:3000 and the server is running.`
+          `Error submitting form: ${error.message}. Please ensure your backend is reachable.`
         );
       }
     });
